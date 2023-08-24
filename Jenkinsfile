@@ -16,7 +16,7 @@ pipeline {
 
         stage ('maven build') {
             steps {
-                bat "mvn clean package -f ./app/pom.xml"
+                bat 'mvn -f app/pom.xml clean package'
             }
         }
 
