@@ -16,11 +16,10 @@ pipeline {
     }
 
     parameters {
-        choice  (
-            choices: '''BUILDnPUSH\nCREATEVM\nDESTROYVM\nDEPLOY''',
-            name: 'CHOICE_PARAM',
-            description: 'select the action'
-
+        choice (
+            choices: '''BUILDNPUSH\nPLAN\nAPPLY\nDESTROY\nDEPLOY''',
+            description: 'select an option',
+            name: 'CHOICE_PARAM'
         )
     }
     
