@@ -1,45 +1,46 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB = credentials('dockerhub')
+    }
+
     options {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '2', daysToKeepStr: '2'))
         disableConcurrentBuilds()
     }
+
     tools {
         jdk 'JAVA'
         maven 'maven'
     }
-
-
+    
     stages {
-        stage ('github checkout') {
+
+        stage ('maven build'){
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Shivakumar1702/devops-002.git']])
+                bat "mvn clean package -f ./app/pom.xml"
             }
         }
 
-        stage ('maven build') {
+        stage ('docker image build'){
             steps {
-                bat 'mvn -f app/pom.xml clean package'
+                bat "docker image build -t shivakumar1702/tomcat:${env.BUILD_NUMBER} ."
             }
         }
 
-        stage ('archive artifacts') {
+        stage ('docker push'){
             steps {
-                archiveArtifacts artifacts: '**/*.war', followSymlinks: false
+                bat "docker login -u ${env.DOCKERHUB_USR} -p ${env.DOCKERHUB_PSW}"
+                bat "docker push shivakumar1702/tomcat:${env.BUILD_NUMBER}"
+                bat "docker logout"
             }
         }
 
-        stage ('deploy to vm') {
+        stage ('remove local image'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://52.191.61.127:8080/')], contextPath: '/', war: '**/*.war'
+                bat "docker image rm shivakumar1702/tomcat:${env.BUILD_NUMBER}"
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'deployment completed'
         }
     }
 }
