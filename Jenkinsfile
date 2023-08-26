@@ -16,9 +16,9 @@ pipeline {
     }
 
     parameters {
-        choice (
-            choices: '''BUILDnPUSH\nCREATEVM\nDESTROYVM\nDEPLOY''',
-            name: 'CHOICE',
+        CHOICE_PARAM (
+            CHOICE_PARAMs: '''BUILDnPUSH\nCREATEVM\nDESTROYVM\nDEPLOY''',
+            name: 'CHOICE_PARAM',
             description: 'select the action'
 
         )
@@ -29,7 +29,7 @@ pipeline {
         stage ('maven build'){
             when {
                 expression {
-                    CHOICE == 'BUILDnPUSH'
+                    CHOICE_PARAM == 'BUILDnPUSH'
                 }
             }
             steps {
@@ -40,7 +40,7 @@ pipeline {
         stage ('docker image build'){
             when {
                 expression {
-                    CHOICE == 'BUILDnPUSH'
+                    CHOICE_PARAM == 'BUILDnPUSH'
                 }
             }
             steps {
@@ -51,7 +51,7 @@ pipeline {
         stage ('docker push'){
             when {
                 expression {
-                    CHOICE == 'BUILDnPUSH'
+                    CHOICE_PARAM == 'BUILDnPUSH'
                 }
             }
             steps {
@@ -64,7 +64,7 @@ pipeline {
         stage ('remove local image'){
             when {
                 expression {
-                    CHOICE == 'BUILDnPUSH'
+                    CHOICE_PARAM == 'BUILDnPUSH'
                 }
             }
             steps {
@@ -75,7 +75,7 @@ pipeline {
         stage ('terraform init'){
             when {
                 expression {
-                    CHOICE == 'CREATEVM'
+                    CHOICE_PARAM == 'CREATEVM'
                 }
             }
             steps {
@@ -86,7 +86,7 @@ pipeline {
         stage ('terraform plan'){
             when {
                 expression {
-                    CHOICE == 'CREATEVM'
+                    CHOICE_PARAM == 'CREATEVM'
                 }
             }
             steps {
@@ -97,7 +97,7 @@ pipeline {
         stage ('terraform apply'){
             when {
                 expression {
-                    CHOICE == 'CREATEVM'
+                    CHOICE_PARAM == 'CREATEVM'
                 }
             }
             steps {
@@ -108,7 +108,7 @@ pipeline {
         stage ('terraform destroy'){
             when {
                 expression {
-                    CHOICE == 'DESTROYVM'
+                    CHOICE_PARAM == 'DESTROYVM'
                 }
             }
             steps {
