@@ -54,6 +54,12 @@ variable "nicname" {
 
 variable "vmname" {
   type    = string
-  default = "tomcat-001"
+  default = "docker-001"
 
 }
+
+# variable "access_key" {
+#   type = string
+#   default = "mjVw+ZekvddmcTzn0uynr9cNBkPH0QtcBnsdiT1719Gzb9OG6CN2hUA9TDV4anC6vzrswd66OMuj+AStlv3ZeA=="
+  
+# }

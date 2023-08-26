@@ -16,6 +16,17 @@ provider "azurerm" {
   subscription_id = "965ae71a-aeca-4691-b19c-89bf6a7c43b3"
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "terraform-backend"
+    storage_account_name = "170296statefile"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+    access_key           = "mjVw+ZekvddmcTzn0uynr9cNBkPH0QtcBnsdiT1719Gzb9OG6CN2hUA9TDV4anC6vzrswd66OMuj+AStlv3ZeA=="
+  }
+}
+
+
 resource "azurerm_resource_group" "rg" {
   name     = var.name
   location = var.location
@@ -139,7 +150,7 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   network_interface_ids           = [azurerm_network_interface.nic.id]
   admin_password                  = "Shiva@170296"
   disable_password_authentication = false
-  custom_data                     = filebase64("./tomcat.tpl")
+  custom_data                     = filebase64("./docker.tpl")
 
   os_disk {
     caching              = "ReadWrite"
