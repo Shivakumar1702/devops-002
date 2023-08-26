@@ -100,7 +100,7 @@ pipeline {
                 }
             }
             steps {
-                bat "terraform -chdir=tomcat-vm apply plan.tfplan -auto-approve"
+                bat "terraform -chdir=tomcat-vm apply -auto-approve"
             }
         }
 
@@ -111,7 +111,7 @@ pipeline {
                 }
             }
             steps {
-                bat "terraform -chdir=tomcat-vm destroy plan.tfplan -auto-approve"
+                bat "terraform -chdir=tomcat-vm destroy -auto-approve"
             }
         }
     }
